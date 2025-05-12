@@ -159,25 +159,80 @@ void set_currency() {
     noecho(); curs_set(0);
     mvprintw(4,2,"Currency updated to %s",currency); mvprintw(6,2,"Press any key..."); getch();
 }
-
+// --------------------
+// View Habits + Complete
+// --------------------
 void view_habits() {
-    clear(); draw_bars(); mvprintw(2,2,"Habits (%d):",habit_count);
-    if (!habit_count) mvprintw(4,4,"No habits.");
-    else for (int i=0;i<habit_count;i++) {
-        int y=4+i*4;
-        mvprintw(y,2,"%d. %s", i+1, habits[i].title);
-        mvprintw(y+1,4,"Streak: %d  Done: %s", habits[i].streak, habits[i].completed?"Yes":"No");
+    int choice;
+    while (1) {
+        clear();
+        draw_bars();
+        mvprintw(2, 2, "Habits (%d):", habit_count);
+        if (habit_count == 0) {
+            mvprintw(4, 4, "No habits.");
+        } else {
+            for (int i = 0; i < habit_count; i++) {
+                int y = 4 + i * 4;
+                mvprintw(y,   2, "%d. %s", i+1, habits[i].title);
+                mvprintw(y+1, 4, "Streak   : %d", habits[i].streak);
+                mvprintw(y+2, 4, "Completed: %s", habits[i].completed ? "Yes" : "No");
+            }
+        }
+        mvprintw(LINES-4, 2, "Enter # to mark complete (0 to return): ");
+        echo(); curs_set(1);
+        scanw("%d", &choice);
+        noecho(); curs_set(0);
+
+        if (choice == 0) break;
+        if (choice >= 1 && choice <= habit_count) {
+            update_balance(&habits[choice-1]);
+            mvprintw(LINES-3, 2,
+                     "Habit %d completed! New Balance: %.2f %s",
+                     choice, balance, currency);
+            mvprintw(LINES-2, 2, "Press any key to continue...");
+            getch();
+        }
     }
-    mvprintw(LINES-2,2,"Press any key..."); getch();
 }
 
+// --------------------
+// View & Redeem Rewards
+// --------------------
 void view_rewards() {
-    clear(); draw_bars(); mvprintw(2,2,"Rewards (%d):",reward_count);
-    if (!reward_count) mvprintw(4,4,"No rewards.");
-    else for (int i=0;i<reward_count;i++) {
-        int y=4+i*3;
-        mvprintw(y,2,"%d. %s", i+1, rewards[i].description);
-        mvprintw(y+1,4,"Price: %.2f %s", rewards[i].price, currency);
+    int choice;
+    while (1) {
+        clear();
+        draw_bars();
+        mvprintw(2, 2, "Rewards (%d):", reward_count);
+        if (reward_count == 0) {
+            mvprintw(4, 4, "No rewards.");
+        } else {
+            for (int i = 0; i < reward_count; i++) {
+                int y = 4 + i * 3;
+                mvprintw(y,   2, "%d. %s", i+1, rewards[i].description);
+                mvprintw(y+1, 4, "Price: %.2f %s", rewards[i].price, currency);
+            }
+        }
+        mvprintw(LINES-4, 2, "Enter # to redeem (0 to return): ");
+        echo(); curs_set(1);
+        scanw("%d", &choice);
+        noecho(); curs_set(0);
+
+        if (choice == 0) break;
+        if (choice >= 1 && choice <= reward_count) {
+            if (balance >= rewards[choice-1].price) {
+                balance -= rewards[choice-1].price;
+                save_balance();
+                mvprintw(LINES-3, 2,
+                         "Redeemed \"%s\"! New Balance: %.2f %s",
+                         rewards[choice-1].description,
+                         balance, currency);
+            } else {
+                mvprintw(LINES-3, 2, "Insufficient balance.");
+            }
+            mvprintw(LINES-2, 2, "Press any key to continue...");
+            getch();
+        }
     }
-    mvprintw(LINES-2,2,"Press any key..."); getch();
 }
+
