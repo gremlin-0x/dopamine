@@ -170,7 +170,11 @@ void view_rewards() {
             case 'd':
                 remove_reward_index(highlight); break;
             case 'u':
-                use_reward_index(highlight); break;
+    if (rewards[highlight].price <= balance) {
+        balance -= rewards[highlight].price;
+        save_balance();
+    }
+    break;
             case 'b': return;
         }
     }

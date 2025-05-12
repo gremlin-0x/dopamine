@@ -1,56 +1,78 @@
-# Dopamine Tracker
+# Dopamine
 
-A terminal-based habit tracker and reward system written in C using `ncurses`.
+Dopamine is a terminal-based, gamified habit tracker that helps you build consistent routines by reinforcing behavior with a virtual reward system. Built using `ncurses`, it operates entirely in your terminal and saves data locally to `~/.dopamine`.
 
-## Repository Structure
+## Features
 
-```
-├── dopamine.h      # Shared data structures & function prototypes
-├── main.c          # Application entry point (initialization & main menu)
-├── storage.c       # Persistent load/save routines for habits, rewards, and balance
-├── logic.c         # Business logic: streak & balance updates, auto-clear checks
-├── ui.c            # `ncurses`-based UI: menus, input, and screen drawing
-└── README.md       # This file
-```
+* Add, complete, and delete habits
+* Assign frequency and reward value to each habit
+* Track streaks and automate reward scaling
+* Earn a virtual currency for completed habits
+* Add, redeem, and delete custom rewards
+* Scrollable interface with contextual controls
 
-## Build Instructions
+## Installation
 
-From the project root (where all `.c` and `.h` files live), run:
+1. Clone the repository:
 
-```bash
-gcc -o dopamine main.c ui.c logic.c storage.c -lncurses
-```
+   ```sh
+   git clone https://github.com/gremlin-0x/dopamine
+   cd dopamine
+   ```
 
-This produces the `dopamine` executable.
+2. Compile the application:
+
+   ```sh
+   gcc -o dopamine main.c ui.c logic.c storage.c -lncurses
+   ```
+
+3. (Optional) Move it into your `$PATH`:
+
+   ```sh
+   sudo mv dopamine /usr/local/bin/
+   ```
 
 ## Usage
 
-```bash
-./dopamine
+Run the app from anywhere:
+
+```sh
+dopamine
 ```
 
-Once running, use the **arrow keys** or **shortcut keys** indicated in the bottom bar to navigate:
+The app will automatically create a `~/.dopamine/` directory for storing all habits, rewards, and balance data.
 
-* **a**: Add Habit
-* **r**: Add Reward
-* **u**: Redeem (Use) Reward
-* **d**: Remove Habit
-* **e**: Remove Reward
-* **b**: Clear Balance
-* **c**: Set Currency (e.g., USD, EUR)
-* **v**: View Habits
-* **w**: View Rewards
-* **q**: Quit
+### Controls
 
-## Data Persistence
+* Home Screen: Navigate to Habits or Rewards
+* In Habits Pane:
 
-* Habits are saved to `habits.dat` in binary format.
-* Rewards are saved to `rewards.dat` in binary format.
-* Balance and currency are saved to `balance.dat` as text.
+  * `a`: Add habit
+  * `c`: Mark as complete
+  * `d`: Delete habit
+  * `↑ ↓`: Scroll
+  * `b`: Go back
+* In Rewards Pane:
 
-All data is loaded on startup and saved after each modification.
+  * `a`: Add reward
+  * `u`: Use reward
+  * `d`: Delete reward
+  * `↑ ↓`: Scroll
+  * `b`: Go back
+
+## Data Storage
+
+All data is stored in `~/.dopamine/` and includes:
+
+* `habits.dat`
+* `rewards.dat`
+* `balance.dat`
 
 ## License
 
-This project is provided under the MIT License. Feel free to use and modify.
+MIT License
+
+## Author
+
+[gremlin-0x](https://github.com/gremlin-0x)
 
