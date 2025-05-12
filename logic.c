@@ -33,3 +33,36 @@ void auto_clear_check() {
         }
     }
 }
+
+void remove_habit_index(int index) {
+    if (index < 0 || index >= habit_count) return;
+    for (int i = index; i < habit_count - 1; ++i) {
+        habits[i] = habits[i + 1];
+    }
+    habit_count--;
+    save_habits();
+}
+
+void complete_habit(int index) {
+    if (index < 0 || index >= habit_count) return;
+    update_balance(&habits[index]);
+}
+
+void remove_reward_index(int index) {
+    if (index < 0 || index >= reward_count) return;
+    for (int i = index; i < reward_count - 1; ++i) {
+        rewards[i] = rewards[i + 1];
+    }
+    reward_count--;
+    save_rewards();
+}
+
+void use_reward_index(int index) {
+    if (index < 0 || index >= reward_count) return;
+    if (balance >= rewards[index].price) {
+        balance -= rewards[index].price;
+        remove_reward_index(index);  // Remove reward after using it
+        save_balance();
+    }
+}
+

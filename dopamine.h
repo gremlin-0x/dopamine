@@ -34,11 +34,13 @@ extern char    currency[10];
 
 // Function prototypes
 void show_main_menu();
-void add_habit();
-void remove_habit();
-void add_reward();
-void remove_reward();
-void use_reward();
+void add_habit();                      // Used only in View Habits pane
+void remove_habit_index(int index);   // Used only in View Habits pane
+void complete_habit(int index);       // Used only in View Habits pane
+
+void add_reward();                    // Used only in View Rewards pane
+void remove_reward_index(int index);  // Used only in View Rewards pane
+void use_reward_index(int index);     // Used only in View Rewards pane
 void clear_balance_manual();
 void set_currency();
 void view_habits();
