@@ -1,0 +1,55 @@
+#ifndef DOPAMINE_H
+#define DOPAMINE_H
+
+#include <time.h>
+
+#define MAX_INPUT   100
+#define MAX_HABITS  100
+#define MAX_REWARDS 100
+
+// Habit structure
+typedef struct {
+    char title[MAX_INPUT];
+    char description[MAX_INPUT];
+    char frequency[MAX_INPUT];   // "daily" or "weekly"
+    float reward_amount;
+    int completed;               // 0 = not done this period, 1 = done
+    int streak;                  // consecutive periods
+    time_t last_completed;       // timestamp
+} Habit;
+
+// Reward structure
+typedef struct {
+    char description[MAX_INPUT];
+    float price;
+} Reward;
+
+// Globals
+extern Habit   habits[MAX_HABITS];
+extern int     habit_count;
+extern Reward  rewards[MAX_REWARDS];
+extern int     reward_count;
+extern float   balance;
+extern char    currency[10];
+
+// Function prototypes
+void show_main_menu();
+void add_habit();
+void remove_habit();
+void add_reward();
+void remove_reward();
+void use_reward();
+void clear_balance_manual();
+void set_currency();
+void view_habits();
+void view_rewards();
+void load_habits();
+void save_habits();
+void load_rewards();
+void save_rewards();
+void load_balance();
+void save_balance();
+void update_balance(Habit *h);
+void auto_clear_check();
+
+#endif // DOPAMINE_H
