@@ -13,24 +13,27 @@ Dopamine is a terminal-based, gamified habit tracker that helps you build consis
 
 ## Installation
 
-1. Clone the repository:
+### Clone and Build
 
-   ```sh
-   git clone https://github.com/gremlin-0x/dopamine
-   cd dopamine
-   ```
+```sh
+git clone https://github.com/gremlin-0x/dopamine
+cd dopamine
+make
+```
 
-2. Compile the application:
+### Install Globally
 
-   ```sh
-   gcc -o dopamine main.c ui.c logic.c storage.c -lncurses
-   ```
+```sh
+sudo make install
+```
 
-3. (Optional) Move it into your `$PATH`:
+This will install the `dopamine` binary into `/usr/local/bin`, allowing you to run it from anywhere.
 
-   ```sh
-   sudo mv dopamine /usr/local/bin/
-   ```
+### Uninstall (Optional)
+
+```sh
+sudo make uninstall
+```
 
 ## Usage
 
@@ -42,23 +45,80 @@ dopamine
 
 The app will automatically create a `~/.dopamine/` directory for storing all habits, rewards, and balance data.
 
-### Controls
+## UI Overview
 
-* Home Screen: Navigate to Habits or Rewards
-* In Habits Pane:
+### Main Menu
 
-  * `a`: Add habit
-  * `c`: Mark as complete
-  * `d`: Delete habit
-  * `↑ ↓`: Scroll
-  * `b`: Go back
-* In Rewards Pane:
+```
+ Balance: 2.00 USD 
 
-  * `a`: Add reward
-  * `u`: Use reward
-  * `d`: Delete reward
-  * `↑ ↓`: Scroll
-  * `b`: Go back
+  View Habits
+  View Rewards
+  Reset Data
+  Exit
+
+
+
+
+
+
+
+
+
+
+
+[v]ViewH [w]ViewR [r]Reset [q]Quit
+```
+
+### View Habits
+
+```
+ Balance: 2.00 USD 
+
+  Habits (10):
+
+  1. [Habit 1] [Streak: 0] [Done: No]
+  2. [Habit 2] [Streak: 1] [Done: Yes]
+  3. [Habit 3] [Streak: 1] [Done: Yes]
+  4. [Habit 4] [Streak: 0] [Done: No]
+  5. [Habit 5] [Streak: 0] [Done: No]
+  6. [Habit 6] [Streak: 0] [Done: No]
+  7. [Habit 7] [Streak: 0] [Done: No]
+  8. [Habit 8] [Streak: 0] [Done: No]
+  9. [Habit 9] [Streak: 0] [Done: No]
+ 10. [Habit 10] [Streak: 0] [Done: No]
+
+
+
+
+
+
+[a]Add [c]Complete [d]Delete [b]Back
+```
+
+### View Rewards
+
+```
+ Balance: 2.00 USD 
+
+  Rewards (7):
+
+  1. [Reward 1] [5.00 USD]
+  2. [Reward 2] [25.00 USD]
+  3. [Reward 3] [25.00 USD]
+  4. [Reward 4] [25.00 USD]
+  5. [Reward 5] [25.00 USD]
+  6. [Reward 6] [50.00 USD]
+  7. [Reward 7] [100.00 USD]
+
+
+
+
+
+
+
+[a]Add [u]Use [d]Delete [b]Back
+```
 
 ## Data Storage
 
@@ -72,6 +132,3 @@ All data is stored in `~/.dopamine/` and includes:
 
 MIT License
 
-## Author
-
-[gremlin-0x](https://github.com/gremlin-0x)
