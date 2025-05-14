@@ -27,8 +27,8 @@ static void draw_bars_rewards() {
 void show_main_menu() {
     int highlight = 0;
     const char *opts[] = {
-        "View Habits", "View Rewards", "Reset Data", "Exit"
-    };
+    "View Habits", "View Rewards", "Change Currency", "Reset Data", "Exit"
+};
     int n = sizeof(opts) / sizeof(opts[0]);
     int ch;
 
@@ -48,8 +48,12 @@ void show_main_menu() {
                 switch (highlight) {
                     case 0: view_habits(); break;
                     case 1: view_rewards(); break;
-                    case 2: reset_all_data(); break;
-                    case 3: return;
+                    case 2: change_currency(); break;
+                    case 3:
+                            if (show_confirmation_dialog("Are you sure you want to reset all data?"))
+                              reset_all_data();
+                            break;
+                    case 4: return;
                 }
                 break;
             case 'v': view_habits(); break;
@@ -71,7 +75,6 @@ void add_habit() {
     Habit h; char buf[MAX_INPUT];
     clear(); draw_bars_habits(); mvprintw(2,2,"Add Habit");
     mvprintw(4,2,"Title: "); getnstr(h.title, MAX_INPUT-1);
-    mvprintw(6,2,"Description: "); getnstr(h.description, MAX_INPUT-1);
     mvprintw(8,2,"Frequency(daily/weekly): "); getnstr(h.frequency, MAX_INPUT-1);
     mvprintw(10,2,"Base Reward(%s): ", currency); getnstr(buf, MAX_INPUT-1); h.reward_amount = atof(buf);
     h.completed = 0; h.streak = 0; h.last_completed = 0;
@@ -214,3 +217,36 @@ void reset_all_data() {
     getch();
 }
 
+int show_confirmation_dialog(const char *message) {
+    int width = 50, height = 7;
+    int startx = (COLS - width) / 2;
+    int starty = (LINES - height) / 2;
+
+    WINDOW *win = newwin(height, width, starty, startx);
+    box(win, 0, 0);
+
+    // Center the message
+    int msg_x = (width - strlen(message)) / 2;
+    mvwprintw(win, 2, msg_x, "%s", message);
+
+    const char *prompt = "Press [y] to confirm, any other key to cancel.";
+    int prompt_x = (width - strlen(prompt)) / 2;
+    mvwprintw(win, 4, prompt_x, "%s", prompt);
+
+    wrefresh(win);
+    int ch = wgetch(win);
+    delwin(win);
+    return (ch == 'y' || ch == 'Y');
+}
+
+void change_currency() {
+    echo();
+    char new_currency[10];
+    mvprintw(LINES - 4, 2, "Enter new currency (e.g., USD, EUR): ");
+    getnstr(new_currency, sizeof(new_currency) - 1);
+    noecho();
+
+    strncpy(currency, new_currency, sizeof(currency));
+    currency[sizeof(currency) - 1] = '\0';
+    save_currency();
+}

@@ -81,3 +81,17 @@ void save_balance() {
     fclose(f);
 }
 
+void save_currency() {
+    FILE *f = fopen(get_path("currency.dat"), "w");
+    if (!f) return;
+    fprintf(f, "%s", currency);
+    fclose(f);
+}
+
+void load_currency() {
+    FILE *f = fopen(get_path("currency.dat"), "r");
+    if (!f) return;
+    fscanf(f, "%9s", currency);
+    fclose(f);
+}
+

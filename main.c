@@ -7,6 +7,7 @@ int main() {
     load_habits();
     load_rewards();
     load_balance();
+    load_currency();
     auto_clear_check();
 
     show_main_menu();

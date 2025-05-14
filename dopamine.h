@@ -10,7 +10,6 @@
 // Habit structure
 typedef struct {
     char title[MAX_INPUT];
-    char description[MAX_INPUT];
     char frequency[MAX_INPUT];   // "daily" or "weekly"
     float reward_amount;
     int completed;               // 0 = not done this period, 1 = done
@@ -42,7 +41,6 @@ void add_reward();                    // Used only in View Rewards pane
 void remove_reward_index(int index);  // Used only in View Rewards pane
 void use_reward_index(int index);     // Used only in View Rewards pane
 void clear_balance_manual();
-void set_currency();
 void view_habits();
 void view_rewards();
 void load_habits();
@@ -54,5 +52,9 @@ void save_balance();
 void update_balance(Habit *h);
 void auto_clear_check();
 void reset_all_data();
+int show_confirmation_dialog(const char *message);
+void change_currency();
+void save_currency();
+void load_currency();
 
 #endif // DOPAMINE_H
