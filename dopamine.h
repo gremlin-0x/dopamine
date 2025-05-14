@@ -53,5 +53,6 @@ void load_balance();
 void save_balance();
 void update_balance(Habit *h);
 void auto_clear_check();
+void reset_all_data();
 
 #endif // DOPAMINE_H
