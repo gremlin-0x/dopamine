@@ -15,6 +15,7 @@ typedef struct {
     int completed;               // 0 = not done this period, 1 = done
     int streak;                  // consecutive periods
     time_t last_completed;       // timestamp
+    int last_completed_day;
 } Habit;
 
 // Reward structure
@@ -56,5 +57,6 @@ int show_confirmation_dialog(const char *message);
 void change_currency();
 void save_currency();
 void load_currency();
+void update_habit_done_statuses();
 
 #endif // DOPAMINE_H

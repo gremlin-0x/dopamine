@@ -8,6 +8,7 @@ int main() {
     load_rewards();
     load_balance();
     load_currency();
+    update_habit_done_statuses();
     auto_clear_check();
 
     show_main_menu();

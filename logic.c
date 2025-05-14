@@ -66,3 +66,31 @@ void use_reward_index(int index) {
     }
 }
 
+int get_today_day_of_year() {
+    time_t now = time(NULL);
+    struct tm *tm_info = localtime(&now);
+    return tm_info->tm_yday;
+}
+
+void update_habit_done_statuses() {
+    time_t now = time(NULL);
+    struct tm *today = localtime(&now);
+
+    for (int i = 0; i < habit_count; i++) {
+        if (habits[i].last_completed == 0) {
+            habits[i].completed = 0;
+            continue;
+        }
+
+        struct tm *last = localtime(&habits[i].last_completed);
+        if (!last) {
+            habits[i].completed = 0;
+            continue;
+        }
+
+        if (today->tm_year != last->tm_year || today->tm_yday != last->tm_yday) {
+            habits[i].completed = 0;
+        }
+    }
+}
+
