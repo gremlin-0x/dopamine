@@ -1,3 +1,4 @@
+// dopamine.h
 #ifndef DOPAMINE_H
 #define DOPAMINE_H
 
@@ -15,7 +16,7 @@ typedef struct {
     int completed;               // 0 = not done this period, 1 = done
     int streak;                  // consecutive periods
     time_t last_completed;       // timestamp
-    int last_completed_day;
+    int last_completed_day;      // Day of year of last completion
 } Habit;
 
 // Reward structure
@@ -34,13 +35,13 @@ extern char    currency[10];
 
 // Function prototypes
 void show_main_menu();
-void add_habit();                      // Used only in View Habits pane
-void remove_habit_index(int index);   // Used only in View Habits pane
-void complete_habit(int index);       // Used only in View Habits pane
+void add_habit();
+void remove_habit_index(int index);
+void complete_habit(int index);
 
-void add_reward();                    // Used only in View Rewards pane
-void remove_reward_index(int index);  // Used only in View Rewards pane
-void use_reward_index(int index);     // Used only in View Rewards pane
+void add_reward();
+void remove_reward_index(int index);
+void use_reward_index(int index);
 void clear_balance_manual();
 void view_habits();
 void view_rewards();
@@ -58,5 +59,6 @@ void change_currency();
 void save_currency();
 void load_currency();
 void update_habit_done_statuses();
+int get_today_day_of_year();
 
 #endif // DOPAMINE_H

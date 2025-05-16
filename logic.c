@@ -1,6 +1,25 @@
+// logic.c
 #include <string.h>
 #include <time.h>
 #include "dopamine.h"
+
+int get_today_day_of_year() {
+    time_t now = time(NULL);
+    struct tm *tm_info = localtime(&now);
+    return tm_info->tm_yday;
+}
+
+int get_week_of_year(time_t t) {
+    struct tm *tm_info = localtime(&t);
+    // This is not ISO week!  Adjust if needed.
+    int week_num = (tm_info->tm_yday / 7) + 1;
+    return week_num;
+}
+
+int get_year(time_t t) {
+    struct tm *tm_info = localtime(&t);
+    return tm_info->tm_year + 1900;
+}
 
 void update_balance(Habit *h) {
     if (!h->completed) {
@@ -10,6 +29,7 @@ void update_balance(Habit *h) {
         balance += daily;
         h->completed = 1;
         h->last_completed = time(NULL);
+        h->last_completed_day = get_today_day_of_year();
         save_balance();
         save_habits();
     }
@@ -61,36 +81,47 @@ void use_reward_index(int index) {
     if (index < 0 || index >= reward_count) return;
     if (balance >= rewards[index].price) {
         balance -= rewards[index].price;
-        remove_reward_index(index);  // Remove reward after using it
+        remove_reward_index(index);
         save_balance();
     }
 }
 
-int get_today_day_of_year() {
-    time_t now = time(NULL);
-    struct tm *tm_info = localtime(&now);
-    return tm_info->tm_yday;
-}
-
 void update_habit_done_statuses() {
     time_t now = time(NULL);
-    struct tm *today = localtime(&now);
+    int today_day = get_today_day_of_year();
+    int today_year = get_year(now);
 
     for (int i = 0; i < habit_count; i++) {
-        if (habits[i].last_completed == 0) {
-            habits[i].completed = 0;
+        Habit *h = &habits[i];
+
+        // Reset if there's no last_completed time
+        if (h->last_completed == 0) {
+            h->completed = 0;
+            h->streak = 0; // Reset streak as well
             continue;
         }
 
-        struct tm *last = localtime(&habits[i].last_completed);
-        if (!last) {
-            habits[i].completed = 0;
-            continue;
+        // Daily habit logic
+        if (strcmp(h->frequency, "daily") == 0) {
+            if (today_year > get_year(h->last_completed) || today_day != h->last_completed_day) {
+                h->completed = 0;
+                // Reset streak if missed
+                if (today_day - h->last_completed_day > 1 || today_year > get_year(h->last_completed)) {
+                    h->streak = 0;
+                }
+            }
         }
 
-        if (today->tm_year != last->tm_year || today->tm_yday != last->tm_yday) {
-            habits[i].completed = 0;
+        // Weekly habit logic
+        else if (strcmp(h->frequency, "weekly") == 0) {
+            if (today_year > get_year(h->last_completed) || get_week_of_year(now) != get_week_of_year(h->last_completed)) {
+                h->completed = 0;
+                // Reset streak if missed
+                if (get_week_of_year(now) - get_week_of_year(h->last_completed) > 1 || today_year > get_year(h->last_completed)) {
+                    h->streak = 0;
+                }
+            }
         }
     }
+    save_habits(); // Important to save changes!
 }
-

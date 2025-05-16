@@ -101,21 +101,6 @@ void view_habits() {
     int highlight = 0, offset = 0;
     int ch;
 
-    // Auto-reset outdated completions
-    time_t now = time(NULL);
-    int modified = 0;
-    for (int i = 0; i < habit_count; ++i) {
-        if (!habits[i].completed) continue;
-
-        double diff = difftime(now, habits[i].last_completed);
-        if ((strcmp(habits[i].frequency, "daily") == 0 && diff > 24 * 3600) ||
-            (strcmp(habits[i].frequency, "weekly") == 0 && diff > 7 * 24 * 3600)) {
-            habits[i].completed = 0;
-            modified = 1;
-        }
-    }
-    if (modified) save_habits();
-
     while (1) {
         clear();
         draw_bars_habits();
