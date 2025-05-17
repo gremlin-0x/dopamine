@@ -13,6 +13,28 @@ Dopamine is a terminal-based, gamified habit tracker that helps you build consis
 * Reset data with confirmation dialog
 * Scrollable interface with contextual controls
 
+## Reward Scaling
+
+Dopamine employs a reward scaling system to incentivize consistent habit completion. When you complete a habit, you earn a virtual currency. The amount of currency earned is determined by your current streak (i.e., the number of consecutive times you've completed the habit) and the base reward value assigned to that habit.
+
+* If your streak is less than the habit's base reward value, you earn an amount equal to your streak.
+* If your streak is equal to or greater than the habit's base reward value, you earn the habit's base reward value.
+
+This system encourages you to maintain your streaks, as you'll initially earn more for each consecutive completion. However, the reward is capped at the habit's base reward value, preventing the reward from growing indefinitely.
+
+**Example:**
+
+For a habit with a base reward value of 5:
+
+* Completion 1: Earn 1 currency
+* Completion 2: Earn 2 currency
+* Completion 3: Earn 3 currency
+* Completion 4: Earn 4 currency
+* Completion 5: Earn 5 currency
+* Completion 6: Earn 5 currency
+* Completion 7: Earn 5 currency
+    * And so on...
+
 ## Installation
 
 ### Clone and Build
