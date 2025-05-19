@@ -10,8 +10,6 @@ int main() {
     load_currency();
     update_habit_done_statuses();
     save_habits();
-    auto_clear_check();
-
     show_main_menu();
 
     endwin();

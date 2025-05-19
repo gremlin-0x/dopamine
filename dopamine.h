@@ -52,7 +52,6 @@ void save_rewards();
 void load_balance();
 void save_balance();
 void update_balance(Habit *h);
-void auto_clear_check();
 void reset_all_data();
 int show_confirmation_dialog(const char *message);
 void change_currency();

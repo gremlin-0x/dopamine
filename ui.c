@@ -75,12 +75,12 @@ void add_habit() {
     Habit h; char buf[MAX_INPUT];
     clear(); draw_bars_habits(); mvprintw(2,2,"Add Habit");
     mvprintw(4,2,"Title: "); getnstr(h.title, MAX_INPUT-1);
-    mvprintw(8,2,"Frequency(daily/weekly): "); getnstr(h.frequency, MAX_INPUT-1);
-    mvprintw(10,2,"Base Reward(%s): ", currency); getnstr(buf, MAX_INPUT-1); h.reward_amount = atof(buf);
+    mvprintw(6,2,"Frequency(daily/weekly): "); getnstr(h.frequency, MAX_INPUT-1);
+    mvprintw(8,2,"Base Reward(%s): ", currency); getnstr(buf, MAX_INPUT-1); h.reward_amount = atof(buf);
     h.completed = 0; h.streak = 0; h.last_completed = 0;
     habits[habit_count++] = h; save_habits();
     noecho(); curs_set(0);
-    mvprintw(12,2,"Habit added."); mvprintw(14,2,"Press any key..."); getch();
+    mvprintw(10,2,"Habit added."); mvprintw(12,2,"Press any key..."); getch();
 }
 
 void add_reward() {

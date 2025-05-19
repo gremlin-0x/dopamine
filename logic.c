@@ -35,25 +35,6 @@ void update_balance(Habit *h) {
     }
 }
 
-void auto_clear_check() {
-    time_t now = time(NULL);
-    for (int i = 0; i < habit_count; i++) {
-        Habit *h = &habits[i];
-        if (!h->last_completed) continue;
-        double diff = difftime(now, h->last_completed);
-        if (strcmp(h->frequency, "daily") == 0 && diff > 2 * 24 * 3600) {
-            balance = 0;
-            save_balance();
-            break;
-        }
-        if (strcmp(h->frequency, "weekly") == 0 && diff > 2 * 7 * 24 * 3600) {
-            balance = 0;
-            save_balance();
-            break;
-        }
-    }
-}
-
 void remove_habit_index(int index) {
     if (index < 0 || index >= habit_count) return;
     for (int i = index; i < habit_count - 1; ++i) {
